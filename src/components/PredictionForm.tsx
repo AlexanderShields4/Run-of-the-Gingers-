@@ -1,30 +1,25 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { Runner } from "@/lib/mockData";
 import { motion, AnimatePresence } from "framer-motion";
 
 interface PredictionFormProps {
   runners: Runner[];
   onSubmitVote: (runnerId: string) => Promise<void>;
+  isLoggedIn: boolean;
+  alreadyVoted: boolean;
 }
 
-export default function PredictionForm({ runners, onSubmitVote }: PredictionFormProps) {
+export default function PredictionForm({ runners, onSubmitVote, isLoggedIn, alreadyVoted }: PredictionFormProps) {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [hasVoted, setHasVoted] = useState(false);
-
-  const handleSubmit = async () => {
-    if (!selectedId) return;
-    setIsSubmitting(true);
-    await onSubmitVote(selectedId);
-    setIsSubmitting(false);
-    setHasVoted(true);
-  };
+  const [hasVoted, setHasVoted] = useState(alreadyVoted);
 
   if (hasVoted) {
     return (
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
         className="bg-[#151111] border border-[#ff9100]/50 rounded-2xl p-6 text-center"
@@ -34,6 +29,37 @@ export default function PredictionForm({ runners, onSubmitVote }: PredictionForm
       </motion.div>
     );
   }
+
+  if (!isLoggedIn) {
+    return (
+      <div className="bg-[#151111] border border-[#2a2020] rounded-2xl p-6 shadow-2xl text-center">
+        <h3 className="text-xl font-bold mb-3 text-white">Cast Your Prediction</h3>
+        <p className="text-sm text-gray-400 mb-6">Sign in to influence the live odds.</p>
+        <div className="flex flex-col gap-3">
+          <Link
+            href="/profile/login"
+            className="w-full py-3 rounded-xl font-bold text-base uppercase tracking-wider bg-gradient-to-r from-[#ff3d00] to-[#ff9100] text-white hover:shadow-[0_0_20px_rgba(255,145,0,0.4)] transition-all duration-300 text-center"
+          >
+            Sign In
+          </Link>
+          <Link
+            href="/profile/create"
+            className="w-full py-3 rounded-xl font-bold text-base uppercase tracking-wider border border-[#2a2020] text-gray-300 hover:border-gray-500 transition-all duration-300 text-center"
+          >
+            Create Account
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
+  const handleSubmit = async () => {
+    if (!selectedId) return;
+    setIsSubmitting(true);
+    await onSubmitVote(selectedId);
+    setIsSubmitting(false);
+    setHasVoted(true);
+  };
 
   return (
     <div className="bg-[#151111] border border-[#2a2020] rounded-2xl p-6 shadow-2xl relative overflow-hidden">
@@ -45,29 +71,29 @@ export default function PredictionForm({ runners, onSubmitVote }: PredictionForm
 
       <div className="flex flex-col gap-3 mb-6">
         {runners.map(runner => (
-          <label 
-            key={runner.id} 
+          <label
+            key={runner.id}
             className={`flex items-center gap-3 p-3 rounded-xl border cursor-pointer transition-all duration-200 ${
-              selectedId === runner.id 
-                ? 'border-[#ff9100] bg-[#ff9100]/10' 
+              selectedId === runner.id
+                ? 'border-[#ff9100] bg-[#ff9100]/10'
                 : 'border-[#2a2020] hover:border-gray-600 bg-black/40'
             }`}
           >
             <div className="relative flex items-center justify-center w-5 h-5 rounded-full border border-gray-500 shrink-0 overflow-hidden">
               <AnimatePresence>
                 {selectedId === runner.id && (
-                  <motion.div 
-                    initial={{ scale: 0 }} 
-                    animate={{ scale: 1 }} 
+                  <motion.div
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
                     exit={{ scale: 0 }}
                     className="w-3 h-3 bg-[#ff9100] rounded-full"
                   />
                 )}
               </AnimatePresence>
             </div>
-            <input 
-              type="radio" 
-              name="runner-vote" 
+            <input
+              type="radio"
+              name="runner-vote"
               value={runner.id}
               className="hidden"
               onChange={() => setSelectedId(runner.id)}
@@ -86,8 +112,8 @@ export default function PredictionForm({ runners, onSubmitVote }: PredictionForm
         className="w-full py-4 rounded-xl font-bold text-lg uppercase tracking-wider transition-all duration-300 bg-gradient-to-r from-[#ff3d00] to-[#ff9100] text-white hover:shadow-[0_0_20px_rgba(255,145,0,0.4)] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-none"
       >
         {isSubmitting ? (
-          <motion.div 
-            animate={{ rotate: 360 }} 
+          <motion.div
+            animate={{ rotate: 360 }}
             transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
             className="w-6 h-6 border-2 border-white border-t-transparent rounded-full mx-auto"
           />

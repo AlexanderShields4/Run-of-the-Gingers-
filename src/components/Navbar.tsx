@@ -1,7 +1,12 @@
 import { Flame } from "lucide-react";
 import Link from "next/link";
+import { createClient } from "@/utils/supabase/server";
+import { logout } from "@/app/profile/actions";
 
-export default function Navbar() {
+export default async function Navbar() {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+
   return (
     <header className="sticky top-0 z-40 w-full backdrop-blur-xl bg-[#0c0808]/80 border-b border-[#2a2020]">
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
@@ -14,16 +19,33 @@ export default function Navbar() {
           </span>
         </Link>
 
-        <nav className="flex items-center gap-6">
+        <nav className="flex items-center gap-4">
           <Link href="/" className="text-sm font-medium text-gray-300 hover:text-white transition-colors">
             Live Odds
           </Link>
-          <Link 
-            href="/lock-it-in" 
-            className="text-sm font-bold bg-white text-black px-4 py-2 rounded-full hover:bg-[#ff9100] transition-colors"
+          <Link
+            href="/lock-it-in"
+            className="text-sm font-medium text-gray-300 hover:text-white transition-colors"
           >
             Lock It In
           </Link>
+          {user ? (
+            <form>
+              <button
+                formAction={logout}
+                className="text-sm font-bold bg-white text-black px-4 py-2 rounded-full hover:bg-[#ff9100] transition-colors"
+              >
+                Sign Out
+              </button>
+            </form>
+          ) : (
+            <Link
+              href="/profile/login"
+              className="text-sm font-bold bg-white text-black px-4 py-2 rounded-full hover:bg-[#ff9100] transition-colors"
+            >
+              Sign In
+            </Link>
+          )}
         </nav>
       </div>
     </header>

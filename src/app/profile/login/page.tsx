@@ -1,12 +1,12 @@
 import Link from 'next/link'
-import { signup } from '@/app/profile/actions'
+import { login } from '@/app/profile/actions'
 
-export default function ProfileCreatePage() {
+export default function LoginPage() {
   return (
     <div className="min-h-screen bg-neutral-950 text-neutral-100 flex items-center justify-center p-4">
       <div className="max-w-md w-full bg-neutral-900 border border-neutral-800 rounded-xl p-8 shadow-2xl">
         <h1 className="text-3xl font-bold mb-6 text-center bg-clip-text text-transparent bg-gradient-to-r from-orange-400 to-red-500">
-          Create Profile
+          Sign In
         </h1>
         <form className="space-y-4">
           <div>
@@ -37,17 +37,17 @@ export default function ProfileCreatePage() {
           </div>
           <div className="pt-2">
             <button
-              formAction={signup}
+              formAction={login}
               className="w-full py-3 px-4 bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white font-semibold rounded-lg shadow-md hover:shadow-lg transition-all transform hover:-translate-y-0.5"
             >
-              Sign Up
+              Sign In
             </button>
           </div>
         </form>
         <p className="mt-6 text-center text-sm text-neutral-500">
-          Already have an account?{' '}
-          <Link href="/profile/login" className="text-orange-400 hover:text-orange-300 transition-colors">
-            Sign in
+          No account?{' '}
+          <Link href="/profile/create" className="text-orange-400 hover:text-orange-300 transition-colors">
+            Create one
           </Link>
         </p>
       </div>

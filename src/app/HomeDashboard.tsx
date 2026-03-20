@@ -9,7 +9,13 @@ import PredictionForm from "@/components/PredictionForm";
 import { submitVote } from "./actions";
 import { motion } from "framer-motion";
 
-export default function HomeDashboard({ initialVoteCounts }: { initialVoteCounts: Record<string, number> }) {
+interface HomeDashboardProps {
+  initialVoteCounts: Record<string, number>
+  isLoggedIn: boolean
+  hasVoted: boolean
+}
+
+export default function HomeDashboard({ initialVoteCounts, isLoggedIn, hasVoted }: HomeDashboardProps) {
   const [predictions, setPredictions] = useState<Record<string, number>>(initialVoteCounts);
   const [selectedRunner, setSelectedRunner] = useState<Runner | null>(null);
 
@@ -17,13 +23,14 @@ export default function HomeDashboard({ initialVoteCounts }: { initialVoteCounts
     return Object.values(predictions).reduce((acc, curr) => acc + curr, 0);
   }, [predictions]);
 
-  const sortedRunners = useMemo(() => {
-    return [...initialRunners].sort((a, b) => {
-      const probA = calculateImpliedProbability(predictions[a.id], totalVotes);
-      const probB = calculateImpliedProbability(predictions[b.id], totalVotes);
-      return probB - probA;
-    });
+  const getProb = useMemo(() => (runnerId: string) => {
+    if (totalVotes === 0) return 1 / initialRunners.length;
+    return calculateImpliedProbability(predictions[runnerId] ?? 0, totalVotes);
   }, [predictions, totalVotes]);
+
+  const sortedRunners = useMemo(() => {
+    return [...initialRunners].sort((a, b) => getProb(b.id) - getProb(a.id));
+  }, [getProb]);
 
   const handleVote = async (runnerId: string) => {
     const updatedCounts = await submitVote(runnerId);
@@ -45,7 +52,7 @@ export default function HomeDashboard({ initialVoteCounts }: { initialVoteCounts
 
         <div className="flex flex-col gap-4">
           {sortedRunners.map((runner, index) => {
-            const impliedProb = calculateImpliedProbability(predictions[runner.id], totalVotes);
+            const impliedProb = getProb(runner.id);
             return (
               <RunnerCard
                 key={runner.id}
@@ -65,6 +72,8 @@ export default function HomeDashboard({ initialVoteCounts }: { initialVoteCounts
           <PredictionForm
             runners={initialRunners}
             onSubmitVote={handleVote}
+            isLoggedIn={isLoggedIn}
+            alreadyVoted={hasVoted}
           />
 
           <motion.div

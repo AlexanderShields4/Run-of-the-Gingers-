@@ -19,7 +19,7 @@ export function calculateImpliedProbability(runnerVotes: number, totalVotes: num
  * @returns The formatted American odds string, e.g., "+150" or "-120".
  */
 export function impliedToAmerican(impliedProbability: number, houseEdge: number = 0.10): string {
-  if (impliedProbability <= 0) return "+0"; // Edge case
+  if (impliedProbability <= 0) return "+9999"; // No votes — extreme underdog
   if (impliedProbability >= 1) return "-10000"; // Prevent infinity
 
   // To simulate a sportsbook's juice/vigorish, we artificialy inflate the implied probability.
