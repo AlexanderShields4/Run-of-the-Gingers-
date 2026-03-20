@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 
 interface PredictionFormProps {
   runners: Runner[];
-  onSubmitVote: (runnerId: string) => void;
+  onSubmitVote: (runnerId: string) => Promise<void>;
 }
 
 export default function PredictionForm({ runners, onSubmitVote }: PredictionFormProps) {
@@ -14,16 +14,12 @@ export default function PredictionForm({ runners, onSubmitVote }: PredictionForm
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [hasVoted, setHasVoted] = useState(false);
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!selectedId) return;
     setIsSubmitting(true);
-    
-    // Simulate network delay
-    setTimeout(() => {
-      onSubmitVote(selectedId);
-      setIsSubmitting(false);
-      setHasVoted(true);
-    }, 600);
+    await onSubmitVote(selectedId);
+    setIsSubmitting(false);
+    setHasVoted(true);
   };
 
   if (hasVoted) {
