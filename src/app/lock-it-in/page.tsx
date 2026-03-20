@@ -29,20 +29,6 @@ export default function LockItInPage() {
           </p>
         </section>
 
-        <section className="bg-[var(--card)] border border-[#ff3d00]/50 shadow-[0_0_30px_rgba(255,61,0,0.1)] rounded-2xl p-8 relative overflow-hidden">
-          <div className="absolute top-0 right-0 p-8 opacity-5">
-            <span className="text-9xl font-black text-[#ff3d00]">03</span>
-          </div>
-          <h2 className="text-2xl font-bold text-white mb-4 relative z-10">Placing Live Wagers</h2>
-          <p className="text-gray-300 leading-relaxed relative z-10 mb-6">
-            If you wish to use these dynamically calculated odds for actual, real-world wagers, you must do so offline. The administrator (Alex) accepts in-person wagers using the exact odds displayed on the dashboard at the moment you "lock it in."
-          </p>
-          <div className="bg-black/50 p-4 rounded-xl border border-white/10">
-            <p className="text-sm font-mono text-[#b87333]">
-              CONTACT ADMIN: Call or text (555) 019-8372 to verify your line before the race starts.
-            </p>
-          </div>
-        </section>
       </div>
     </div>
   );
