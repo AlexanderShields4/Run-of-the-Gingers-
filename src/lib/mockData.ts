@@ -15,7 +15,7 @@ export const runners: Runner[] = [
     nickname: "Dr. Farty",
     bio: "Known for explosive starts but occasionally gasses out before the final turn. A true high-risk, high-reward pick.",
     speed_stat: 92,
-    stamina_stat: 75,
+    stamina_stat: 84,
     image_url: "https://api.dicebear.com/9.x/avataaars/svg?seed=Oliver&hairColor=d0021b,ff5c5c&skinColor=ffdbb4",
   },
   {
@@ -24,6 +24,6 @@ export const runners: Runner[] = [
     nickname: "Mustache",
     bio: "Last years Winner. Won't be the fastest off the line, but will never slow down.",
     speed_stat: 88,
-    stamina_stat: 98,
+    stamina_stat: 94,
     image_url: "https://api.dicebear.com/9.x/avataaars/svg?backgroundColor[]&accessories[]&accessoriesProbability=0&eyebrows=default&eyes=happy&facialHair=moustacheFancy&facialHairColor=c93305&facialHairProbability=100&hairColor=c93305&mouth=default&skinColor=edb98a&style=default,circle&top=shaggy&seed=Charlie%20Lennig",
   }];
