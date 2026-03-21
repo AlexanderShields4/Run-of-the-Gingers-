@@ -29,6 +29,16 @@ export default function LockItInPage() {
           </p>
         </section>
 
+        <section className="bg-[var(--card)] border border-[#ff3d00]/50 shadow-[0_0_30px_rgba(255,61,0,0.1)] rounded-2xl p-8 relative overflow-hidden">
+          <div className="absolute top-0 right-0 p-8 opacity-5">
+            <span className="text-9xl font-black text-[#ff3d00]">03</span>
+          </div>
+          <h2 className="text-2xl font-bold text-white mb-4 relative z-10">The Stakes</h2>
+          <p className="text-gray-300 leading-relaxed relative z-10">
+            This is not just a race. The loser forfeits their ginger card — effective immediately upon crossing the finish line in last place. Surrender of the ginger card is enforced by a mandatory full bleach of the hair. No extensions, no exceptions. The flame dies with the loss.
+          </p>
+        </section>
+
       </div>
     </div>
   );
